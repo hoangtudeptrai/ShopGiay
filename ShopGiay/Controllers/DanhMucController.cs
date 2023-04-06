@@ -86,6 +86,7 @@ namespace ShopGiay.Controllers
                 _logger.LogError(ex.ToString());
                 return StatusCode(500, "Internal server error");
             }
+            //aa
         }
     }
 }
