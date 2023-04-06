@@ -57,7 +57,7 @@ namespace ShopGiay.Controllers
                     return Ok(new { flag = false, msg = "Tên đăng nhập đã tồn tại", value = result });
 
                 return Ok(new { flag = true, msg = "Đăng kí thành công", value = result });
-
+                `
             }
             catch (Exception ex)
             {
@@ -86,6 +86,7 @@ namespace ShopGiay.Controllers
                 _logger.LogError(ex.ToString());
                 return StatusCode(500, "Internal server error");
             }
+            //tuDepTrai
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ShopGiay.Interfaces
         public Task<List<DM_TaiKhoanViewModel>> GetList_TaiKhoan();
         public Task<int> ThemMoiTaiKhoan(DM_TaiKhoanViewModel dM_TaiKhoanViewModel);
         public Task<int> CheckLoign(DM_TaiKhoanViewModel dM_TaiKhoanViewModel);
-
+        //TuDepTrai
 
 
     }
