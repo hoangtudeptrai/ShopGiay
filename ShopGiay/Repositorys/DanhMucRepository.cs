@@ -33,7 +33,7 @@ namespace ShopGiay.Repositorys
                 var parameters = new DynamicParameters();
                 using (var connection = _context.CreateConnection())
                 {
-                    parameters.Add("TenDangNhap", dM_TaiKhoanViewModel.TenDangNhap, DbType.String, ParameterDirection.Input);
+                    parameters.Add("TaiKhoan", dM_TaiKhoanViewModel.TaiKhoan, DbType.String, ParameterDirection.Input);
                     parameters.Add("MatKhau", dM_TaiKhoanViewModel.MatKhau, DbType.String, ParameterDirection.Input);
                     var result = await connection.ExecuteScalarAsync<int>
                         (procedureName, parameters, commandType: CommandType.StoredProcedure);
@@ -77,9 +77,14 @@ namespace ShopGiay.Repositorys
                 var parameters = new DynamicParameters();
                 using (var connection = _context.CreateConnection())
                 {
-                    parameters.Add("TenDangNhap", dM_TaiKhoanViewModel.TenDangNhap, DbType.String, ParameterDirection.Input);
-                    parameters.Add("TenDayDu", dM_TaiKhoanViewModel.TenDayDu, DbType.String, ParameterDirection.Input);
+                    parameters.Add("TaiKhoan", dM_TaiKhoanViewModel.TaiKhoan, DbType.String, ParameterDirection.Input);
                     parameters.Add("MatKhau", dM_TaiKhoanViewModel.MatKhau, DbType.String, ParameterDirection.Input);
+                    parameters.Add("Ho", dM_TaiKhoanViewModel.Ho, DbType.String, ParameterDirection.Input);
+                    parameters.Add("Ten", dM_TaiKhoanViewModel.Ten, DbType.String, ParameterDirection.Input);
+                    parameters.Add("Email", dM_TaiKhoanViewModel.Email, DbType.String, ParameterDirection.Input);
+                    parameters.Add("SoDienThoai", dM_TaiKhoanViewModel.SoDienThoai, DbType.String, ParameterDirection.Input);
+                    parameters.Add("DiaChi", dM_TaiKhoanViewModel.DiaChi, DbType.String, ParameterDirection.Input);
+                    parameters.Add("Role", dM_TaiKhoanViewModel.Role, DbType.Int32, ParameterDirection.Input);
                     var result = await connection.ExecuteScalarAsync<int>
                         (procedureName, parameters, commandType: CommandType.StoredProcedure);
 
