@@ -16,7 +16,7 @@ namespace ShopGiay.Repositorys
     {
         private readonly DapperContext _context;
         private readonly ILogger<DanhMucRepository> _logger;
-        private readonly string uploadpath = "/Files/Upload/HoSo_FileDinhKem";
+        private readonly string uploadpath = "/Files/Upload/FileDinhKem";
 
         public DanhMucRepository(DapperContext context, ILogger<DanhMucRepository> logger)
         {
@@ -25,7 +25,7 @@ namespace ShopGiay.Repositorys
 
         }
 
-        public async Task<int> CheckLoign(DM_TaiKhoanViewModel dM_TaiKhoanViewModel)
+        public async Task<int> CheckLoign(string TaiKhoan, string MatKhau)
         {
             try
             {
@@ -33,8 +33,8 @@ namespace ShopGiay.Repositorys
                 var parameters = new DynamicParameters();
                 using (var connection = _context.CreateConnection())
                 {
-                    parameters.Add("TaiKhoan", dM_TaiKhoanViewModel.TaiKhoan, DbType.String, ParameterDirection.Input);
-                    parameters.Add("MatKhau", dM_TaiKhoanViewModel.MatKhau, DbType.String, ParameterDirection.Input);
+                    parameters.Add("TaiKhoan",TaiKhoan, DbType.String, ParameterDirection.Input);
+                    parameters.Add("MatKhau", MatKhau, DbType.String, ParameterDirection.Input);
                     var result = await connection.ExecuteScalarAsync<int>
                         (procedureName, parameters, commandType: CommandType.StoredProcedure);
 
@@ -45,6 +45,30 @@ namespace ShopGiay.Repositorys
             {
                 _logger.LogError("TuDH_DM_TaiKhoan_CheckDangNhap", ex);
                 throw new ArgumentException("TuDH_DM_TaiKhoan_CheckDangNhap", ex);
+            }
+        }
+
+        public async Task<int> DoiMatKhau(string TaiKhoan, string MatKhauCu, string MatKhauMoi)
+        {
+            try
+            {
+                var procedureName = "TuDH_Insert_TaiKhoan";
+                var parameters = new DynamicParameters();
+                using (var connection = _context.CreateConnection())
+                {
+                    parameters.Add("TaiKhoan", TaiKhoan, DbType.String, ParameterDirection.Input);
+                    parameters.Add("MatKhauCu", MatKhauCu, DbType.String, ParameterDirection.Input);
+                    parameters.Add("MatKhauMoi", MatKhauMoi, DbType.String, ParameterDirection.Input);
+                    var result = await connection.ExecuteScalarAsync<int>
+                        (procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("TuDH_Insert_TaiKhoan", ex);
+                throw new ArgumentException("TuDH_Insert_TaiKhoan", ex);
             }
         }
 
@@ -82,7 +106,7 @@ namespace ShopGiay.Repositorys
                     parameters.Add("Ho", dM_TaiKhoanViewModel.Ho, DbType.String, ParameterDirection.Input);
                     parameters.Add("Ten", dM_TaiKhoanViewModel.Ten, DbType.String, ParameterDirection.Input);
                     parameters.Add("Email", dM_TaiKhoanViewModel.Email, DbType.String, ParameterDirection.Input);
-                    parameters.Add("SoDienThoai", dM_TaiKhoanViewModel.SoDienThoai, DbType.String, ParameterDirection.Input);
+                    parameters.Add("SoDienThoai", dM_TaiKhoanViewModel.SDT, DbType.String, ParameterDirection.Input);
                     parameters.Add("DiaChi", dM_TaiKhoanViewModel.DiaChi, DbType.String, ParameterDirection.Input);
                     parameters.Add("Role", dM_TaiKhoanViewModel.Role, DbType.Int32, ParameterDirection.Input);
                     var result = await connection.ExecuteScalarAsync<int>
