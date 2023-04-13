@@ -37,6 +37,7 @@ namespace ShopGiay
             services.AddControllers();
             services.AddSingleton<DapperContext>();
             services.AddScoped<IDanhMucRepository, DanhMucRepository>();
+            services.AddScoped<ISanPhamRepository, SanPhamRepositorycs>();
             services.AddCors();
             services.AddSwaggerGen();
             services.AddControllers()

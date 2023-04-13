@@ -2,6 +2,7 @@
 {
     public class DM_TaiKhoanViewModel
     {
+        public int ID_TaiKhoan { get; set; }
         public string TaiKhoan { get; set; }
         public string MatKhau { get; set; }
         public string Ho { get; set; }
