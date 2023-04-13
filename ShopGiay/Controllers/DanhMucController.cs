@@ -103,30 +103,32 @@ namespace ShopGiay.Controllers
             }
         }
 
-        [HttpPost("CheckDanhNhap")]
-        public async Task<IActionResult> DoiMatKhau(string TaiKhoan, string MatKhauCu, string MatKhauMoi)
+        [HttpPost("DoiMatKhau")]
+        public async Task<IActionResult> DoiMatKhau(string TaiKhoan, string MatKhauCu, string MatKhauMoi, int ID_TaiKhoan)
         {
             try
             {
+                string MatKhauText = MatKhauMoi.ToString();
                 MatKhauCu = PassWorkHasher.MD5Pass(MatKhauCu);
                 MatKhauMoi = PassWorkHasher.MD5Pass(MatKhauMoi);
 
-                var result = await _danhMucRepository.DoiMatKhau(TaiKhoan, MatKhauCu, MatKhauMoi);
+                var result = await _danhMucRepository.DoiMatKhau(TaiKhoan, MatKhauCu, MatKhauMoi, ID_TaiKhoan);
 
-                if (result == -2)
-                    return Ok(new { flag = false, msg = "Tên tài khoản không đúng", value = result });
 
                 if (result == -1)
-                    return Ok(new { flag = false, msg = "Mật khẩu cũ không đúng, vui lòng thử lại", value = result });
+                    return Ok(new { flag = false, msg = "Tài khoản hoặc mật khẩu không đúng, vui lòng thử lại", value = result });
 
-                string pass = CheckPassWork(MatKhauMoi);
+                if (result == 0)
+                    return Ok(new { flag = false, msg = "Không thành công, vui lòng thửu lại sau", value = result });
+
+                string pass = CheckPassWork(MatKhauText);
                 if (!string.IsNullOrEmpty(pass))
                 {
                     return Ok(new { flag = false, msg = pass });
                 }
 
 
-                return Ok(new { flag = true, msg = "Đăng nhập thành công", value = result });
+                return Ok(new { flag = true, msg = "Đổi mật khẩu thàng công", value = result });
 
             }
             catch (Exception ex)

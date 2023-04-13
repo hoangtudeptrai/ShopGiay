@@ -48,14 +48,15 @@ namespace ShopGiay.Repositorys
             }
         }
 
-        public async Task<int> DoiMatKhau(string TaiKhoan, string MatKhauCu, string MatKhauMoi)
+        public async Task<int> DoiMatKhau(string TaiKhoan, string MatKhauCu, string MatKhauMoi, int ID_TaiKhoan)
         {
             try
             {
-                var procedureName = "TuDH_Insert_TaiKhoan";
+                var procedureName = "TuDH_DoiMatKhau";
                 var parameters = new DynamicParameters();
                 using (var connection = _context.CreateConnection())
                 {
+                    parameters.Add("ID_TaiKhoan", ID_TaiKhoan, DbType.Int32, ParameterDirection.Input);
                     parameters.Add("TaiKhoan", TaiKhoan, DbType.String, ParameterDirection.Input);
                     parameters.Add("MatKhauCu", MatKhauCu, DbType.String, ParameterDirection.Input);
                     parameters.Add("MatKhauMoi", MatKhauMoi, DbType.String, ParameterDirection.Input);
