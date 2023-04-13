@@ -123,5 +123,26 @@ namespace ShopGiay.Repositorys
             }
         }
 
+        public async Task<int> XoaTaiKhoan(int ID_TaiKhoan)
+        {
+            try
+            {
+                var procedureName = "TuDH_XoaTaiKhoan";
+                var parameters = new DynamicParameters();
+                using (var connection = _context.CreateConnection())
+                {
+                    parameters.Add("ID_TaiKhoan", ID_TaiKhoan, DbType.Int32, ParameterDirection.Input);
+                    var result = await connection.ExecuteScalarAsync<int>
+                        (procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("TuDH_XoaTaiKhoan", ex);
+                throw new ArgumentException("TuDH_XoaTaiKhoan", ex);
+            }
+        }
     }
 }

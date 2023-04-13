@@ -138,6 +138,28 @@ namespace ShopGiay.Controllers
             }
         }
 
+        [HttpPost("XoaTaiKhoan")]
+        public async Task<IActionResult> XoaTaiKhoan(int ID_TaiKhoan)
+        {
+            try
+            {
+
+                var result = await _danhMucRepository.XoaTaiKhoan(ID_TaiKhoan);
+
+
+                if (result == -1)
+                    return Ok(new { flag = false, msg = "Xóa không thành công", value = result });
+
+                return Ok(new { flag = true, msg = "Xóa thàng công", value = result });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         public string CheckPassWork(string password)
         {
             StringBuilder sb = new StringBuilder();
