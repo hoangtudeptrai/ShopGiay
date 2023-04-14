@@ -39,9 +39,20 @@ namespace ShopGiay.Repositorys
                     connection.Open();
                     using (var transaction = connection.BeginTransaction())
                     {
+
                         #region Thêm bản ghi bảng DM_SanPham
                         string procedureName = "TuDH_ThemMoiSanPham";
                         var parameters = new DynamicParameters();
+                        parameters.Add("ThongTinMoTa", obj.ThongTinMoTa, DbType.String, ParameterDirection.Input);
+
+                        parameters.Add("TinhTrangSanPham", obj.TinhTrangSanPham, DbType.String, ParameterDirection.Input);
+                        parameters.Add("LoaiKhoaDay", obj.LoaiKhoaDay, DbType.String, ParameterDirection.Input);
+                        parameters.Add("ChatLieu", obj.ChatLieu, DbType.String, ParameterDirection.Input);
+                        parameters.Add("XuatXu", obj.XuatXu, DbType.String, ParameterDirection.Input);
+                        parameters.Add("ChieuCaoCoGiay", obj.ChieuCaoCoGiay, DbType.String, ParameterDirection.Input);
+                        parameters.Add("DiaChiGuiHang", obj.DiaChiGuiHang, DbType.String, ParameterDirection.Input);
+
+                        parameters.Add("ID_NhanHieu", obj.ID_NhanHieu, DbType.Int32, ParameterDirection.Input);
                         parameters.Add("TenSanPham", obj.TenSanPham, DbType.String, ParameterDirection.Input);
                         parameters.Add("GioiThieuSanPham", obj.GioiThieuSanPham, DbType.String, ParameterDirection.Input);
                         parameters.Add("GiaSanPham", obj.GiaSanPham, DbType.Int32, ParameterDirection.Input);

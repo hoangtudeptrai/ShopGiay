@@ -43,7 +43,7 @@ namespace ShopGiay.Controllers
         }
 
 
-        [HttpPost("save_attachment_hoso")]
+        [HttpPost("save_attachment")]
         public async Task<IActionResult> UploadAttachment(int ID_SanPham)
         {
             try
