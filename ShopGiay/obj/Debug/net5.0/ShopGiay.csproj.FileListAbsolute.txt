@@ -78,3 +78,4 @@ C:\D\Trainning\API\ShopGiay\ShopGiay\bin\Debug\net5.0\Microsoft.Extensions.Depen
 C:\D\Trainning\API\ShopGiay\ShopGiay\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
 C:\D\Trainning\API\ShopGiay\ShopGiay\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\D\Trainning\API\ShopGiay\ShopGiay\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\D\Trainning\API\ShopGiay\ShopGiay\bin\Debug\net5.0\Newtonsoft.Json.dll

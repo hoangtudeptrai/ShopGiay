@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System;
 using ShopGiay.Models;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ShopGiay.Controllers
 {
@@ -69,6 +71,47 @@ namespace ShopGiay.Controllers
             {
                 _logger.LogError(ex.ToString());
                 return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("GetList_SanPham")]
+        public async Task<IActionResult> GetList_SanPham()
+        {
+            try
+            {
+                List<TrangChuSanPhamViewModel> result = await _sanPhamRepository.GetList_SanPham();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet("ThongTinChiTietSanPham")]
+        public async Task<IActionResult> ThongTinChiTietSanPham(int ID_SanPham)
+        {
+            try
+            {
+
+                var result = await _sanPhamRepository.ThongTinChiTietSanPham(ID_SanPham);
+
+
+                return Ok(new {
+                    flag = true, msg = "", 
+                    thongtincoban = JsonConvert.SerializeObject(result.Tables[0]),
+                    mausac_size = JsonConvert.SerializeObject(result.Tables[1]), 
+                    img = JsonConvert.SerializeObject(result.Tables[2]), 
+                    xuatsugiay = JsonConvert.SerializeObject(result.Tables[3]), 
+                    danhgiasanpham = JsonConvert.SerializeObject(result.Tables[4])
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(500);
             }
         }
     }

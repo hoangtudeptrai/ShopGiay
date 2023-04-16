@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using System.Linq;
 
 namespace ShopGiay.Repositorys
 {
@@ -68,15 +69,15 @@ namespace ShopGiay.Repositorys
                         {
                             foreach (var item in obj.listChiTietSanPham)
                             {
-                                string procedureName_BaoGia = "TUDH_Insert_DM_ChiTietSanPham";
-                                var parameters_BaoGia = new DynamicParameters();
-                                parameters_BaoGia.Add("ID_SanPham", result, DbType.Int32, ParameterDirection.Input);
-                                parameters_BaoGia.Add("ID_MauSac", item.ID_MauSac, DbType.Int32, ParameterDirection.Input);
-                                parameters_BaoGia.Add("Size", item.Size, DbType.Int32, ParameterDirection.Input);
-                                parameters_BaoGia.Add("SoLuong", item.SoLuong, DbType.Int32, ParameterDirection.Input);
+                                string procedureName_chiTiet = "TUDH_Insert_DM_ChiTietSanPham";
+                                var parameters_chiTiet = new DynamicParameters();
+                                parameters_chiTiet.Add("ID_SanPham", result, DbType.Int32, ParameterDirection.Input);
+                                parameters_chiTiet.Add("ID_MauSac", item.ID_MauSac, DbType.Int32, ParameterDirection.Input);
+                                parameters_chiTiet.Add("Size", item.Size, DbType.Int32, ParameterDirection.Input);
+                                parameters_chiTiet.Add("SoLuong", item.SoLuong, DbType.Int32, ParameterDirection.Input);
 
                                 long them = await connection.ExecuteScalarAsync<long>
-                                    (procedureName_BaoGia, parameters_BaoGia, commandType: CommandType.StoredProcedure, transaction: transaction);
+                                    (procedureName_chiTiet, parameters_chiTiet, commandType: CommandType.StoredProcedure, transaction: transaction);
                             }
                         }
                         #endregion
@@ -168,6 +169,62 @@ namespace ShopGiay.Repositorys
                 _logger.LogError("TuDH_ThemAnh " + ex.Message);
                 throw new ArgumentException("TuDH_ThemAnh", ex);
             }
+        }
+
+        public async Task<List<TrangChuSanPhamViewModel>> GetList_SanPham()
+        {
+            try
+            {
+                var procedureName = "TuDH_GetData_SanPham_TrangChu";
+                var parameters = new DynamicParameters();
+                using (var connection = _context.CreateConnection())
+                {
+                    var result = await connection.QueryAsync<TrangChuSanPhamViewModel>
+                        (procedureName, parameters, commandType: CommandType.StoredProcedure, commandTimeout: 150);
+
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("TuDH_GetData_SanPham_TrangChu", ex);
+                throw new ArgumentException("TuDH_GetData_SanPham_TrangChu", ex);
+            }
+        }
+
+        public async Task<DataSet> ThongTinChiTietSanPham(int ID_SanPham)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                var procedureName = "TuDH_ThongTinChiTietSanPham";
+                using (var connection = _context.CreateConnection())
+                {
+                    parameters.Add("ID_SanPham", ID_SanPham, DbType.Int32, ParameterDirection.Input);
+                    var reader = await connection.ExecuteReaderAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                    DataSet ds = new DataSet();
+                    ds = ConvertDataReaderToDataSet(reader);
+                    return ds;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("TuDH_ThongTinChiTietSanPham " + ex.Message);
+                throw new ArgumentException("TuDH_ThongTinChiTietSanPham", ex);
+            }
+        }
+        public DataSet ConvertDataReaderToDataSet(IDataReader data)
+        {
+            DataSet ds = new DataSet();
+            int i = 0;
+            while (!data.IsClosed)
+            {
+                ds.Tables.Add("Table" + (i + 1));
+                ds.EnforceConstraints = false;
+                ds.Tables[i].Load(data);
+                i++;
+            }
+            return ds;
         }
     }
 }
